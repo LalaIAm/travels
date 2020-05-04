@@ -1,6 +1,7 @@
 const modalBtn = document.getElementById('modal-open-btn');
 const modal = document.getElementById('modal');
 const closeBtn = document.getElementById('modal-close');
+const submit = document.getElementById('location-submit-btn');
 
 modalBtn.onclick = function () {
     modal.style.display = 'block';
@@ -18,7 +19,14 @@ window.onclick = function (event) {
 
 const getNewLocation = () => {
     const location = document.getElementById('location-input').value 
+
+    console.log('New Location Entered: ', location);
     return location;
+}
+
+submit.onclick = () => {
+    modal.style.display = 'none';
+    const location = getNewLocation();
 }
 
 module.exports = { getNewLocation };
