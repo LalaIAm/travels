@@ -19,20 +19,28 @@ window.onclick = function (event) {
   }
 };
 
-const getNewLocation = () => {
-  const location = document.getElementById('location-input').value;
-
-  console.log('New Location Entered: ', location);
-  return location;
-};
-/*
-submit.onclick = () => {
-    modal.style.display = 'none';
-    const location = getNewLocation();
-}
-*/
-
 let inputData = {};
+
+const sendData = (data = {}) => {
+  let myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+
+  const sentData = JSON.stringify(data);
+
+  let options = {
+    method: 'POST',
+    headers: myHeaders,
+    body: sentData,
+    redirect: 'follow',
+  };
+
+  fetch('http://localhost:4000/new', options)
+    .then((response) => response.json())
+    .then((result) => {
+      return result;
+    })
+    .catch((error) => console.log('error posting trip: ', error));
+};
 
 const showTab = (n) => {
   let x = document.getElementsByClassName('tab');
@@ -73,6 +81,8 @@ function submitAnswer(n) {
     modal.style.display = 'none';
 
     console.log('input: ', inputData);
+    sendData(inputData);
+    Travel.saveData(inputData);
     return inputData;
   }
 
@@ -107,4 +117,4 @@ function fixStepIndicator(n) {
 
 showTab(currentTab);
 
-module.exports = { getNewLocation, submitAnswer };
+module.exports = {  submitAnswer };
