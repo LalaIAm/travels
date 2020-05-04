@@ -37,11 +37,38 @@
   }
 }
 
-#location-input {
+input {
   width: 60%;
   border-radius: 15px;
   outline: none;
   border: .5px solid #438496;
   font-size: 1.2rem;
   padding: .3rem;
+}
+
+.tab {
+  display: none;
+}
+
+#prevBtn {
+  background-color: #bbb;
+}
+
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+.step.finish {
+  background-color: #4caf50;
 }

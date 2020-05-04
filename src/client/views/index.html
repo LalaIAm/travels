@@ -1,33 +1,64 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Amiko&family=Euphoria+Script&family=Neuton:ital,wght@0,400;0,700;1,400&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Amiko&family=Euphoria+Script&family=Neuton:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
     <title>Travel Journal</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <h1 class='logo'>Journey Journal</h1>
-        <!-- Trigger Modal Open -->
-        <button id='modal-open-btn'>Start New Trip!</button>
+      <h1 class="logo">Journey Journal</h1>
+      <!-- Trigger Modal Open -->
+      <button id="modal-open-btn">Start New Trip!</button>
     </header>
     <!-- Modal -->
-    <aside id='modal' class='modal'>
-        <div class='modal-content'>
-            <span id='modal-close'>&times;</span>
-            <h3>What's Your Destination?</h3>
-            <input type='text' id='location-input' placeholder='Enter A City'>
-            <button id='location-submit-btn' type='submit'>Start Planning!</button>
+    <aside id="modal" class="modal">
+      <div class="modal-content">
+        <h1>Start Planning Your Trip</h1>
+        <span id="modal-close">&times;</span>
+
+        <!-- one "tab" for each step on the form -->
+        <div class="tab">
+          <h3>What's Your Destination?</h3>
+          <input type="text" data-key='location' id="location-input" class='modal-input' placeholder="Enter A City" />
         </div>
+        <div class="tab">
+          <h3>Do You Have a Date Planned?</h3>
+          <input id="leave-input" data-key='departure' type='date' class='modal-input' min='2020-01-01' />
+          <p>until</p>
+          <input id='return-input' data-key='return' type='date' class='modal-input' min='2020-01-01'/>
+        </div>
+
+        <div class="tab">
+          <h3>Is There Anything Specific You'd Like to See?</h3>
+          <input type="text" data-key='attractions' class='modal-input' id="attraction-input" />
+        </div>
+
+        <div style="overflow: auto;">
+          <div style="float: right;">
+            <button type="button" id="prevBtn" onclick="Travel.submitAnswer(-1)">
+              Previous
+            </button>
+            <button type="button" id="nextBtn" onclick="Travel.submitAnswer(1)">
+              Next
+            </button>
+          </div>
+        </div>
+        <!-- indicate form steps -->
+        <div style="text-align: center; margin-top: 40px;">
+          <span class="step"></span>
+          <span class="step"></span>
+          <span class="step"></span>
+        </div>
+      </div>
     </aside>
     <main>
-        <h2 class='title'>Where to next...?</h2>
+      <h2 class="title">Where to next...?</h2>
     </main>
-</body>
-
+  </body>
 </html>
