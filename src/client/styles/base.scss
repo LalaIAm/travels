@@ -1,0 +1,25 @@
+body {
+  background: #f3f1ed;
+  color: #26272f;
+  font-size: 10px;
+  font-family: 'Amiko';
+
+  button {
+    font-size: 1rem;
+    padding: 0.3rem 1rem;
+    border-radius: 15px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    background-color: #cd5360;
+    box-shadow: 2px 4px 6px rgba(20, 20, 20, 0.3),
+      4px 7px 9px rgba(20, 20, 20, 0.07),
+      inset 2px 3px 5px rgba(200, 200, 200, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+  }
+  button:hover {
+    background: #b37d4e;
+    box-shadow: 1px 2px 4px rgba(20, 20, 20, 0.3);
+  }
+}
