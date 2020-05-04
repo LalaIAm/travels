@@ -43,9 +43,20 @@ const countdownTimer = (date) => {
 
 const getGeodata = async (city) => {
     //Todo: implement post to server to get geodata
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(city)
+    }
+    try {
+        const response = await fetch('http://localhost:3000/geo', options)
+        const result = await response.json();
+        return result;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-const displayTrips = async () => {
+async function displayTrips (){
     const trips = await getUserTrips();
     const tripsSection = document.getElementById('user-trips');
     const list = document.getElementById('trip-list');
@@ -67,4 +78,4 @@ const displayTrips = async () => {
 
 displayTrips();
 
-export { getUserTrips, updateUi, displayTrips };
+export { displayTrips, getUserTrips, updateUi};

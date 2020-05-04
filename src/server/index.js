@@ -65,7 +65,7 @@ const getSavedTrips = async (req, res) => {
 }
 
 const getGeoInfo = async (req, res) => {
-  const city = req.body.location;
+  const city = req.body
   try {
     const request = await getGeonamesData(city);
     console.log('request: ', request);
