@@ -1,12 +1,17 @@
 const modalBtn = document.getElementById('modal-open-btn');
 const modal = document.getElementById('modal');
 const closeBtn = document.getElementById('modal-close');
-const submit = document.getElementById('location-submit-btn');
+
+
 
 let currentTab = 0;
 
+
+
+
 modalBtn.onclick = function () {
   modal.style.display = 'block';
+  
 };
 
 closeBtn.onclick = function () {
@@ -16,10 +21,12 @@ closeBtn.onclick = function () {
 window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = 'none';
+
   }
 };
 
 let inputData = {};
+let userData = {}
 
 const sendData = (data = {}) => {
   let myHeaders = new Headers();
@@ -34,7 +41,7 @@ const sendData = (data = {}) => {
     redirect: 'follow',
   };
 
-  fetch('http://localhost:4000/new', options)
+  fetch('http://localhost:3000/new', options)
     .then((response) => response.json())
     .then((result) => {
       return result;
@@ -61,7 +68,7 @@ const showTab = (n) => {
   fixStepIndicator(n);
 };
 
-function submitAnswer(n) {
+async function submitAnswer (n) {
   let x = document.getElementsByClassName('tab');
   let inputs = document.querySelectorAll('.modal-input');
 
@@ -79,10 +86,12 @@ function submitAnswer(n) {
 
   if (currentTab >= x.length) {
     modal.style.display = 'none';
-
+    
     console.log('input: ', inputData);
     sendData(inputData);
-    Travel.saveData(inputData);
+    
+    const trips = await Travel.getUserTrips();
+    
     return inputData;
   }
 
@@ -90,9 +99,7 @@ function submitAnswer(n) {
 }
 
 function validateForm() {
-  let x,
-    y,
-    i,
+  let x, y,
     valid = true;
 
   x = document.getElementsByClassName('tab');
@@ -117,4 +124,22 @@ function fixStepIndicator(n) {
 
 showTab(currentTab);
 
-module.exports = {  submitAnswer };
+const sendLoginData = async () => {
+
+  let myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+
+
+  let options = {
+    method: 'POST',
+    headers: myHeaders,
+    redirect: 'follow'
+  }
+
+  fetch('http://localhost:3000/login', options).then((result) => {
+    console.log(result)
+  }).catch(err => console.log('login err: ', err));
+
+}
+
+export {  submitAnswer, sendLoginData };

@@ -2,13 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const {
-  trips,
-  loginAnonymous,
-  logoutCurrentUser,
-  getCurrentUser,
-  hasLoggedInUser,
-} = require('./db');
+
+
+const { saveTrip, updateTrip, deleteTrip, loadSavedTrips } = require('./db');
+const { loginUserAnonymous, logoutCurrentUser } = require('./auth');
+const { getGeonamesData } = require('./api');
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,9 +19,12 @@ app.use(cors());
 
 app.use(express.static('dist'));
 
+
 app.get('/', (req, res) => {
   res.sendFile('dist/index.html');
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`server listening at http://localhost:${PORT}`);
@@ -35,54 +36,50 @@ function callBack(req, res) {
 
 app.post('/add', callBack);
 
-const saveTravelData = (data) => {
-  localStorage.setItem('trip', JSON.stringify(data));
-  console.log('Data Saved: ', data);
-};
 
-const retrieveData = () => {
-  let info = window.localStorage.getItem('trip');
-  let data = JSON.parse(info);
-  console.log('Retrieved data: ', data);
-  return data;
-};
 
-const sendData = (req, res) => {
-  let data = localStorage.getItem('trip');
-
-  if (data === undefined || data === null) {
-    res.send(appData);
-    saveTravelData(appData);
-  } else {
-    res.send(data);
-  }
-};
 
 const newTripData = async (req, res) => {
-  const user = getCurrentUser();
+  let user = await loginUserAnonymous();
+
   const newData = req.body;
   appData.location = newData.location;
   appData.departure = newData.departure;
   appData.return = newData.return;
   appData.attractions = newData.attractions;
-  appData.owner = user.id;
+  appData.userId = user.id
 
-  const result = await saveTripData(appData);
+  console.log('App Data: ', appData)
 
-  console.log('saved: ', result);
+  saveTrip(appData).then(result => console.log(result)).catch(err => console.log(err));
+
 };
 
-const saveTripData = async (data) => {
-  trips
-    .insertOne(data)
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => console.log('error saving to db: ', error));
-};
+const getSavedTrips = async (req, res) => {
+  try {
+    let result = await loadSavedTrips();
+    res.send(result);
+  } catch (err) {
+    console.log('error fetching trips: ', err);
+  }
+}
 
+const getGeoInfo = async (req, res) => {
+  const city = req.body.location;
+  try {
+    const request = await getGeonamesData(city);
+    console.log('request: ', request);
+  } catch (error) {
+    console.log('geo err', err);
+  }
+}
+
+
+app.post('/login', loginUserAnonymous);
 app.post('/new', newTripData);
+app.get('/all', getSavedTrips);
+app.post('/geo', getGeoInfo)
 
-app.get('/all', sendData);
 
-module.exports = { client };
+
+
