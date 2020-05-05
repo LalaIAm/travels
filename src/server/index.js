@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
+const formatData = require('./data')
 
 
 const { saveTrip, updateTrip, deleteTrip, loadSavedTrips } = require('./db');
@@ -50,6 +51,7 @@ const newTripData = async (req, res) => {
   appData.userId = user.id
 
   console.log('App Data: ', appData)
+  const formattedData = await formatData(appData)
 
   saveTrip(appData).then(result => console.log(result)).catch(err => console.log(err));
 
